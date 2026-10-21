@@ -4,10 +4,11 @@
 2. layout.tsx ✔️
 3. preparing for google search console from beginning ✔️
 4. background.tsx ✔️
-5. navbar.tsx 
-6. footer.tsx
-7. loading.tsx
-8. notfound.tsx
+5. cursor & Click sound & Typing Sound ✔️
+6. navbar.tsx ✔️
+7. footer.tsx
+8. loading.tsx
+9. notfound.tsx
 
 ---
 

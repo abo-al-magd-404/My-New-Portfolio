@@ -15,7 +15,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}{" "}
+      {children}
     </NextThemesProvider>
   );
 }

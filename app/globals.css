@@ -3,19 +3,16 @@
 @import "shadcn/tailwind.css";
 
 /* =========================================================
-   1. Theme Configuration
-   Tailwind CSS v4 + shadcn/ui (base-mira / neutral)
-   ========================================================= */
+  1. Theme Configuration
+========================================================= */
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Typography */
   --font-sans: var(--font-family);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-family);
 
-  /* Core Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -39,12 +36,10 @@
 
   --color-destructive: var(--destructive);
 
-  /* Borders & Focus */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -54,19 +49,16 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Charts */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  /* Brand Colors */
   --color-brand-blue: var(--brand-blue);
   --color-brand-violet: var(--brand-violet);
   --color-brand-cyan: var(--brand-cyan);
 
-  /* Border Radius */
   --radius-xs: calc(var(--radius) * 0.4);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -78,27 +70,23 @@
 }
 
 /* =========================================================
-   2. Design Tokens — Light Mode
-   ========================================================= */
+  2. Design Tokens — Light Mode
+========================================================= */
 
 :root {
   color-scheme: light;
 
-  /* Default Font: English */
   --font-family: var(--font-audiowide);
 
-  /* Core */
   --background: #f7f5ef;
   --foreground: #171717;
 
-  /* Surfaces */
   --card: #fdfcf8;
   --card-foreground: #171717;
 
   --popover: #fdfcf8;
   --popover-foreground: #171717;
 
-  /* Neutral Component Palette */
   --primary: #262626;
   --primary-foreground: #fafafa;
 
@@ -113,19 +101,16 @@
 
   --destructive: #dc2626;
 
-  /* Borders & Focus */
   --border: #e4e1d8;
   --input: #e4e1d8;
   --ring: #737373;
 
-  /* Charts */
   --chart-1: #2563eb;
   --chart-2: #7c3aed;
   --chart-3: #0891b2;
   --chart-4: #d97706;
   --chart-5: #db2777;
 
-  /* Sidebar */
   --sidebar: #f3f1ea;
   --sidebar-foreground: #262626;
   --sidebar-primary: #262626;
@@ -135,61 +120,50 @@
   --sidebar-border: #e4e1d8;
   --sidebar-ring: #737373;
 
-  /* Brand */
   --brand-blue: #2563eb;
   --brand-violet: #7c3aed;
   --brand-cyan: #0891b2;
 
-  /* Geometry */
   --radius: 0.625rem;
 
-  /* Layout */
   --container-width: 1280px;
   --page-gutter: clamp(1.25rem, 5vw, 5rem);
 
-  /* Typography */
   --text-display: clamp(3rem, 7vw, 6.5rem);
   --text-h1: clamp(2.5rem, 5vw, 4.5rem);
   --text-h2: clamp(2rem, 4vw, 3.5rem);
   --text-h3: clamp(1.5rem, 2.5vw, 2rem);
 
-  /* Motion */
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 180ms;
   --duration-normal: 300ms;
 
-  /* Glass Effects */
   --glass-background: rgb(253 252 248 / 75%);
   --glass-border: rgb(23 23 23 / 8%);
 
-  /* Shadows */
   --shadow-soft: 0 8px 32px rgb(23 23 23 / 5%);
   --shadow-card: 0 12px 40px rgb(23 23 23 / 7%);
 
-  /* Glows */
   --glow-blue: rgb(37 99 235 / 18%);
   --glow-violet: rgb(124 58 237 / 15%);
 }
 
 /* =========================================================
-   3. Design Tokens — Dark Mode
-   ========================================================= */
+  3. Design Tokens — Dark Mode
+========================================================= */
 
 .dark {
   color-scheme: dark;
 
-  /* Pure Black */
   --background: #000000;
   --foreground: #f5f5f5;
 
-  /* Surfaces */
   --card: #0a0a0a;
   --card-foreground: #f5f5f5;
 
   --popover: #0a0a0a;
   --popover-foreground: #f5f5f5;
 
-  /* Neutral Component Palette */
   --primary: #f5f5f5;
   --primary-foreground: #171717;
 
@@ -204,19 +178,16 @@
 
   --destructive: #f87171;
 
-  /* Borders & Focus */
   --border: rgb(255 255 255 / 10%);
   --input: rgb(255 255 255 / 15%);
   --ring: #737373;
 
-  /* Charts */
   --chart-1: #60a5fa;
   --chart-2: #a78bfa;
   --chart-3: #22d3ee;
   --chart-4: #fbbf24;
   --chart-5: #f472b6;
 
-  /* Sidebar */
   --sidebar: #050505;
   --sidebar-foreground: #f5f5f5;
   --sidebar-primary: #f5f5f5;
@@ -226,28 +197,23 @@
   --sidebar-border: rgb(255 255 255 / 10%);
   --sidebar-ring: #737373;
 
-  /* Brand */
   --brand-blue: #60a5fa;
   --brand-violet: #a78bfa;
   --brand-cyan: #22d3ee;
 
-  /* Glass Effects */
   --glass-background: rgb(10 10 10 / 75%);
   --glass-border: rgb(255 255 255 / 10%);
 
-  /* Shadows */
   --shadow-soft: 0 8px 32px rgb(0 0 0 / 35%);
   --shadow-card: 0 12px 40px rgb(0 0 0 / 45%);
 
-  /* Glows */
   --glow-blue: rgb(59 130 246 / 25%);
   --glow-violet: rgb(139 92 246 / 22%);
 }
 
 /* =========================================================
-   4. Language & Typography
-   Requires next/font variables from layout.tsx.
-   ========================================================= */
+  4. Language & Typography
+========================================================= */
 
 html[lang="ar"] {
   --font-family: var(--font-tajawal);
@@ -258,8 +224,8 @@ html[lang="en"] {
 }
 
 /* =========================================================
-   5. Base Styles
-   ========================================================= */
+  5. Base Styles
+========================================================= */
 
 @layer base {
   *,
@@ -296,8 +262,6 @@ html[lang="en"] {
 
     overflow-wrap: break-word;
   }
-
-  /* Headings */
 
   h1,
   h2,
@@ -339,8 +303,6 @@ html[lang="en"] {
   h6 {
     font-size: 1rem;
   }
-
-  /* Text */
 
   p {
     margin: 0;
@@ -400,8 +362,6 @@ html[lang="en"] {
     opacity: 1;
   }
 
-  /* Scrollbars */
-
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--muted-foreground) transparent;
@@ -428,20 +388,16 @@ html[lang="en"] {
 }
 
 /* =========================================================
-   6. Layout Utilities
-   ========================================================= */
+  6. Layout Utilities
+========================================================= */
 
 @layer utilities {
-  /* Main Container */
-
   .container-main {
     width: 100%;
     max-width: var(--container-width);
     margin-inline: auto;
     padding-inline: var(--page-gutter);
   }
-
-  /* Section Spacing */
 
   .section-padding {
     padding-block: clamp(4rem, 9vw, 8rem);
@@ -450,8 +406,6 @@ html[lang="en"] {
   .section-padding-sm {
     padding-block: clamp(3rem, 6vw, 5rem);
   }
-
-  /* Section Headings */
 
   .section-heading {
     max-width: 48rem;
@@ -480,8 +434,6 @@ html[lang="en"] {
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
-
-  /* Typography */
 
   .heading-display {
     font-size: var(--text-display);
@@ -530,8 +482,6 @@ html[lang="en"] {
     font-size: 0.875em;
   }
 
-  /* Brand Gradients */
-
   .text-gradient {
     color: var(--brand-blue);
     background-image: linear-gradient(
@@ -553,8 +503,6 @@ html[lang="en"] {
     );
   }
 
-  /* Surfaces */
-
   .surface {
     background: var(--card);
     border: 1px solid var(--border);
@@ -570,8 +518,6 @@ html[lang="en"] {
     backdrop-filter: blur(20px);
   }
 
-  /* Glows */
-
   .glow-primary {
     box-shadow:
       0 0 32px var(--glow-blue),
@@ -585,8 +531,6 @@ html[lang="en"] {
   .glow-violet {
     box-shadow: 0 0 36px var(--glow-violet);
   }
-
-  /* Background Layers */
 
   .background-grid {
     background-image:
@@ -611,11 +555,6 @@ html[lang="en"] {
       radial-gradient(ellipse at 80% 60%, var(--glow-violet), transparent 55%);
   }
 
-  /* Interactive Helpers
-     Avoid applying these to elements animated by GSAP
-     unless both systems are intentionally coordinated.
-  */
-
   .interactive {
     transition:
       color var(--duration-normal) var(--ease-standard),
@@ -637,8 +576,6 @@ html[lang="en"] {
     }
   }
 
-  /* Accessibility */
-
   .sr-only-focusable:not(:focus):not(:active) {
     position: absolute;
     width: 1px;
@@ -653,10 +590,8 @@ html[lang="en"] {
 }
 
 /* =========================================================
-   7. Reduced Motion
-   Component animations should also respect this preference.
-   ========================================================= */
-
+  7. Reduced Motion
+========================================================= */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -677,25 +612,23 @@ html[lang="en"] {
 ======================================== */
 @supports (animation-timeline: scroll()) {
   html {
-    scrollbar-width: none; /* Firefox, Chrome 121+, Safari 18.2+ */
+    scrollbar-width: none;
   }
 
   html::-webkit-scrollbar {
-    display: none; /* Chrome 115–120 */
+    display: none;
   }
 
   html::after {
     content: "";
     position: fixed;
     top: 0;
-    right: 0; /* use inset-inline-end: 0 to follow RTL (see notes) */
+    right: 0;
     z-index: 100;
     width: 3px;
-    height: 0; /* base state: no progress at top / non-scrollable page */
+    height: 0;
     pointer-events: none;
     border-radius: 3px 0 0 3px;
-    /* Gradient is sized to the full viewport height and revealed as the
-       element grows, so colors map to scroll position (blue top → cyan bottom). */
     background: linear-gradient(
         to bottom,
         var(--brand-blue),
@@ -705,7 +638,7 @@ html[lang="en"] {
       left top / 100% 100dvh no-repeat;
     box-shadow: 0 0 8px var(--glow-blue);
     animation: scroll-progress-grow linear both;
-    animation-timeline: scroll(root block); /* must come after the shorthand */
+    animation-timeline: scroll(root block);
   }
 }
 
@@ -716,4 +649,28 @@ html[lang="en"] {
   to {
     height: 100dvh;
   }
+}
+
+@media (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    cursor: none !important;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
 }

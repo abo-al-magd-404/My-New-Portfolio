@@ -1,36 +1,10 @@
-// 1. IMPORTS
-import type { Metadata, Viewport } from "next";
-import { Audiowide, Tajawal, Geist_Mono } from "next/font/google";
-import "../globals.css";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "../../i18n/config";
-import Background from "@/components/general/Background";
-import Navbar from "@/components/general/Navbar";
-import Footer from "@/components/general/Footer";
-import ThemeProvider from "@/components/providers/ThemeProvider";
+import LocaleSync from "../../components/general/LocaleSync";
+import Navbar from "../../components/general/Navbar";
+import Footer from "../../components/general/Footer";
 
-// 2. FONT CONFIGURATION
-const audiowide = Audiowide({
-  variable: "--font-audiowide",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "700", "800"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// 3. METADATA
 type MetadataProps = {
   params: Promise<{ locale: string }>;
 };
@@ -173,8 +147,8 @@ export async function generateMetadata({
     keywords,
 
     icons: {
-      icon: "/favicon.ico",
-      apple: "/apple-touch-icon.png",
+      icon: "/pictures/favicon.ico",
+      apple: "/pictures/apple-touch-icon.png",
     },
 
     alternates: {
@@ -195,7 +169,7 @@ export async function generateMetadata({
       alternateLocale: isArabic ? ["en_US"] : ["ar_EG"],
       images: [
         {
-          url: `${siteUrl}/og-image.png`,
+          url: `${siteUrl}/pictures/og-image.png`,
           width: 1200,
           height: 630,
           alt: title,
@@ -207,7 +181,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`${siteUrl}/og-image.png`],
+      images: [`${siteUrl}/pictures/og-image.png`],
     },
 
     robots: {
@@ -217,69 +191,33 @@ export async function generateMetadata({
   };
 }
 
-// 4. VIEWPORT
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  colorScheme: "light dark",
-  themeColor: [
-    {
-      media: "(prefers-color-scheme: light)",
-      color: "#f7f5ef",
-    },
-    {
-      media: "(prefers-color-scheme: dark)",
-      color: "#000000",
-    },
-  ],
-};
-
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ar" }];
 }
 
-// 5. ROOT LAYOUT PROPS
-type RootLayoutProps = Readonly<{
+type LocaleLayoutProps = Readonly<{
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>;
 
-// 6. ROOT LAYOUT COMPONENT
-export default async function RootLayout({
+export default async function LocaleLayout({
   children,
   params,
-}: RootLayoutProps) {
+}: LocaleLayoutProps) {
   const { locale } = await params;
 
   if (!locales.includes(locale as Locale)) {
     notFound();
   }
 
-  const isArabic = locale === "ar";
-
   return (
-    <html
-      lang={locale}
-      dir={isArabic ? "rtl" : "ltr"}
-      suppressHydrationWarning
-      className={[
-        "min-h-full",
-        "antialiased",
-        audiowide.variable,
-        tajawal.variable,
-        geistMono.variable,
-      ].join(" ")}
-    >
-      <body className="flex flex-col min-h-screen">
-        <ThemeProvider>
-          <Background />
-          <Navbar />
-          <main className="relative z-100 flex-1 container mx-auto px-4 sm:px-5">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <LocaleSync locale={locale as Locale} />
+      <Navbar locale={locale as "en" | "ar"} />
+      <main className="relative flex-1 container mx-auto pt-20">
+        {children}
+      </main>
+      <Footer />
+    </>
   );
 }

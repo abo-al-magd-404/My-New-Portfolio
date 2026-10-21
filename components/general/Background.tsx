@@ -3,10 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-/* -------------------------------------------------------------------------- */
-/*  Types                                                                      */
-/* -------------------------------------------------------------------------- */
-
 type RGB = [number, number, number];
 
 type Palette = {
@@ -18,25 +14,25 @@ type Palette = {
 };
 
 type Look = {
-  grid: number; // static lattice opacity
-  dot: number; // resting node opacity
-  runner: number; // runner line opacity
-  cursor: number; // extra node opacity near the cursor
-  coreMix: number; // how far node cores lean toward --foreground
-  light: number; // soft light behind the cursor
-  wave: number; // click wave of light
+  grid: number;
+  dot: number;
+  runner: number;
+  cursor: number;
+  coreMix: number;
+  light: number;
+  wave: number;
 };
 
 type Runner = {
   active: boolean;
   delay: number;
   horizontal: boolean;
-  line: number; // row index (horizontal) or column index (vertical)
-  dir: number; // +1 | -1
-  pos: number; // head position along its axis (px)
-  speed: number; // px / second
-  length: number; // tail length (px)
-  idx: number; // color ramp index
+  line: number;
+  dir: number;
+  pos: number;
+  speed: number;
+  length: number;
+  idx: number;
   alpha: number;
 };
 
@@ -44,14 +40,10 @@ type Ripple = {
   active: boolean;
   x: number;
   y: number;
-  p: number; // 0 → 1, driven by GSAP
+  p: number;
   hue0: number;
   born: number;
 };
-
-/* -------------------------------------------------------------------------- */
-/*  Tunables                                                                   */
-/* -------------------------------------------------------------------------- */
 
 const TAU = Math.PI * 2;
 
@@ -71,7 +63,6 @@ const PALETTE_KEYS = [
   "foreground",
 ] as const;
 
-/** Theme-dependent intensities. Colors always come from CSS variables. */
 const LOOK: Record<"light" | "dark", Look> = {
   light: {
     grid: 0.14,
@@ -99,26 +90,22 @@ const CORE_PX = 16;
 const DOT_RADIUS = 1.2;
 
 const AMBIENT_POOL = 6;
-const SPEED_MIN = 380; // px / s
+const SPEED_MIN = 380;
 const SPEED_MAX = 720;
-const TAIL_MIN = 140; // px
+const TAIL_MIN = 140;
 const TAIL_MAX = 280;
-const DELAY_MIN = 0.15; // s before an exited runner respawns
+const DELAY_MIN = 0.15;
 const DELAY_MAX = 1.4;
 
-const LIGHT_RADIUS = 180; // cursor light radius (px)
+const LIGHT_RADIUS = 180;
 const MOUSE_SIGMA = 85;
 const MOUSE_INV = 1 / (2 * MOUSE_SIGMA * MOUSE_SIGMA);
 
 const RIPPLE_POOL = 4;
-const RIPPLE_DURATION = 1.8; // s
-const RIPPLE_MAX_RADIUS = 900; // px
+const RIPPLE_DURATION = 1.8;
+const RIPPLE_MAX_RADIUS = 900;
 
 const THEME_DURATION = 0.7;
-
-/* -------------------------------------------------------------------------- */
-/*  Helpers                                                                    */
-/* -------------------------------------------------------------------------- */
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -134,7 +121,6 @@ const mixRGB = (a: RGB, b: RGB, t: number, out: RGB): RGB => {
   return out;
 };
 
-/** blue (0) → violet (0.5) → cyan (1) */
 const rampColor = (p: Palette, t: number, out: RGB): RGB =>
   t < 0.5
     ? mixRGB(p.blue, p.violet, t * 2, out)
@@ -162,10 +148,6 @@ const samePalette = (a: Palette, b: Palette) =>
 
 let probeCtx: CanvasRenderingContext2D | null = null;
 
-/**
- * Resolves ANY CSS color the browser understands (hex, rgb, hsl, oklch…)
- * to RGB by painting a single pixel.
- */
 const resolveColor = (value: string, fallback: RGB): RGB => {
   const raw = value.trim();
   if (!raw) return [...fallback];
@@ -181,7 +163,7 @@ const resolveColor = (value: string, fallback: RGB): RGB => {
   const sentinel = "#010203";
   probeCtx.fillStyle = sentinel;
   probeCtx.fillStyle = raw;
-  if (probeCtx.fillStyle === sentinel) return [...fallback]; // rejected as invalid
+  if (probeCtx.fillStyle === sentinel) return [...fallback];
 
   probeCtx.clearRect(0, 0, 1, 1);
   probeCtx.fillRect(0, 0, 1, 1);
@@ -205,10 +187,6 @@ const readPalette = (): Palette => {
 
 const isDark = () => document.documentElement.classList.contains("dark");
 
-/* -------------------------------------------------------------------------- */
-/*  Component                                                                  */
-/* -------------------------------------------------------------------------- */
-
 export default function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -229,8 +207,6 @@ export default function Background() {
     const maxDpr = lowPower ? 1.5 : 2;
     const frameInterval = lowPower ? 1 / 30 : 0;
 
-    /* ----------------------------- layout state ---------------------------- */
-
     let W = 0;
     let H = 0;
     let dpr = 1;
@@ -243,14 +219,12 @@ export default function Background() {
     let gridX = new Float32Array(0);
     let gridY = new Float32Array(0);
 
-    const gridLayer = document.createElement("canvas"); // lattice + resting dots
-    const coreAtlas = document.createElement("canvas"); // tinted node sprites
+    const gridLayer = document.createElement("canvas");
+    const coreAtlas = document.createElement("canvas");
     let coreSize = 0;
 
     const rampFull: string[] = new Array(RAMP_STEPS).fill("");
     const rampZero: string[] = new Array(RAMP_STEPS).fill("");
-
-    /* ----------------------------- animation state ------------------------- */
 
     let reduced = motionQuery.matches;
     let running = false;
@@ -266,6 +240,8 @@ export default function Background() {
 
     let scrollEnergy = 0;
     let lastScrollY = window.scrollY;
+    let scrollIdleTimer: ReturnType<typeof setTimeout> | undefined;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
     const runners: Runner[] = Array.from({ length: AMBIENT_POOL }, () => ({
       active: false,
@@ -292,8 +268,6 @@ export default function Background() {
     const tmpA: RGB = [0, 0, 0];
     const tmpB: RGB = [0, 0, 0];
 
-    /* ----------------------------- theme state ----------------------------- */
-
     let paletteTo = readPalette();
     let paletteFrom = clonePalette(paletteTo);
     const live = clonePalette(paletteTo);
@@ -303,8 +277,6 @@ export default function Background() {
     const look: Look = { ...LOOK.light };
     const themeState = { mix: 1 };
     let themeTween: gsap.core.Tween | undefined;
-
-    /* ------------------------- cached layers / sprites --------------------- */
 
     const buildAtlas = () => {
       const cctx = coreAtlas.getContext("2d");
@@ -338,7 +310,6 @@ export default function Background() {
       gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       gctx.clearRect(0, 0, W, H);
 
-      // Lattice
       mixRGB(live.border, live.foreground, 0.35, tmpA);
       gctx.strokeStyle = rgba(tmpA, look.grid);
       gctx.lineWidth = 1;
@@ -354,7 +325,6 @@ export default function Background() {
       }
       gctx.stroke();
 
-      // Resting dots: one batched fill
       mixRGB(live.blue, live.foreground, 0.35, tmpA);
       gctx.fillStyle = rgba(tmpA, look.dot);
       gctx.beginPath();
@@ -392,8 +362,6 @@ export default function Background() {
       rebuildStyles();
     };
 
-    /* -------------------------------- runners ------------------------------ */
-
     const spawnRunner = (r: Runner, prewarm: boolean) => {
       r.active = true;
       r.horizontal = Math.random() < 0.5;
@@ -426,8 +394,6 @@ export default function Background() {
       }
     };
 
-    /* --------------------------------- layout ------------------------------ */
-
     const resize = () => {
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -451,7 +417,6 @@ export default function Background() {
       rows = Math.ceil(H / cell) + 2;
       count = cols * rows;
 
-      // +0.5 keeps 1px lines crisp on the device pixel grid.
       const originX = Math.round((W - (cols - 1) * cell) / 2) + 0.5;
       const originY = Math.round((H - (rows - 1) * cell) / 2) + 0.5;
 
@@ -472,21 +437,21 @@ export default function Background() {
       draw();
     };
 
-    /* --------------------------------- drawing ----------------------------- */
-
     function draw() {
       if (!W || !H) return;
 
       ctx.globalAlpha = 1;
       ctx.clearRect(0, 0, W, H);
 
-      /* 1 ─ Light layer (under the grid): cursor light + click waves. */
       if (hover > 0.01) {
         rampColor(live, 0.55, tmpA);
+
         const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, LIGHT_RADIUS);
+
         g.addColorStop(0, rgba(tmpA, look.light * hover));
         g.addColorStop(0.5, rgba(tmpA, look.light * hover * 0.35));
         g.addColorStop(1, rgba(tmpA, 0));
+
         ctx.fillStyle = g;
         ctx.fillRect(
           sx - LIGHT_RADIUS,
@@ -505,7 +470,7 @@ export default function Background() {
         const a = look.wave * Math.pow(1 - rp.p, 1.5);
         if (radius < 2 || a < 0.004) continue;
 
-        const band = 60 + 90 * rp.p; // ring half-thickness
+        const band = 60 + 90 * rp.p;
         const r0 = Math.max(0, radius - band);
         const r1 = radius + band;
         const peak = (radius - r0) / (r1 - r0);
@@ -517,7 +482,6 @@ export default function Background() {
         g.addColorStop(peak, rgba(tmpA, a));
         g.addColorStop(1, rgba(tmpA, 0));
 
-        // Stroke only the annulus instead of filling a huge disc.
         ctx.strokeStyle = g;
         ctx.lineWidth = r1 - r0;
         ctx.beginPath();
@@ -525,10 +489,8 @@ export default function Background() {
         ctx.stroke();
       }
 
-      /* 2 ─ Lattice + resting dots. */
       ctx.drawImage(gridLayer, 0, 0, W, H);
 
-      /* 3 ─ Runners: gradient tail + small head. */
       ctx.lineWidth = 1.5;
 
       for (let i = 0; i < runners.length; i++) {
@@ -579,7 +541,6 @@ export default function Background() {
         }
       }
 
-      /* 4 ─ Cursor: nearby nodes get slightly larger and tinted. */
       if (hover > 0.02) {
         const R = MOUSE_SIGMA * 2.6;
         const c0 = Math.max(0, Math.floor((sx - R - gridX[0]) / cell));
@@ -615,8 +576,6 @@ export default function Background() {
 
       ctx.globalAlpha = 1;
     }
-
-    /* --------------------------------- loop -------------------------------- */
 
     const tick = (time: number) => {
       if (lastTime < 0) lastTime = time;
@@ -673,8 +632,6 @@ export default function Background() {
       gsap.ticker.remove(tick);
     };
 
-    /* ------------------------------ interactions --------------------------- */
-
     const addRipple = (x: number, y: number) => {
       let slot: Ripple | undefined;
       for (let i = 0; i < RIPPLE_POOL; i++) {
@@ -684,7 +641,6 @@ export default function Background() {
         }
       }
       if (!slot) {
-        // Pool exhausted: recycle the oldest ripple.
         slot = ripples[0];
         for (let i = 1; i < RIPPLE_POOL; i++) {
           if (ripples[i].born < slot.born) slot = ripples[i];
@@ -720,6 +676,7 @@ export default function Background() {
         sx = mx;
         sy = my;
       }
+
       hoverTarget = 1;
     };
 
@@ -732,15 +689,38 @@ export default function Background() {
       addRipple(event.clientX, event.clientY);
     };
 
-    // Scroll only records a number; the loop reads it. No work per event.
     const onScroll = () => {
       if (reduced) return;
+
       const y = window.scrollY;
+
       scrollEnergy = Math.min(
         1,
         scrollEnergy + Math.abs(y - lastScrollY) / 900,
       );
+
       lastScrollY = y;
+
+      // On touch devices, use the viewport center as the ambient-light position.
+      if (coarsePointer) {
+        mx = W / 2;
+        my = H / 2;
+
+        // Avoid animating the light from its initial off-screen position.
+        if (hover < 0.02) {
+          sx = mx;
+          sy = my;
+        }
+
+        hoverTarget = 1;
+
+        // Hide the light gradually after scrolling stops.
+        if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
+        scrollIdleTimer = setTimeout(() => {
+          hoverTarget = 0;
+          scrollIdleTimer = undefined;
+        }, 180);
+      }
     };
 
     const onThemeChange = () => {
@@ -780,15 +760,13 @@ export default function Background() {
 
       if (reduced) {
         stopLoop();
-        resetRunners(); // deactivates everything
-        draw(); // static lattice only
+        resetRunners();
+        draw();
       } else {
         resetRunners();
         startLoop();
       }
     };
-
-    /* ------------------------------- bootstrap ----------------------------- */
 
     applyTheme();
 
@@ -816,6 +794,7 @@ export default function Background() {
       stopLoop();
       themeTween?.kill();
       clearRipples();
+      if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
 
       resizeObserver.disconnect();
       themeObserver.disconnect();
@@ -836,7 +815,7 @@ export default function Background() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 top-0 z-0 h-lvh w-full"
+      className="pointer-events-none fixed inset-x-0 top-0 h-lvh w-full"
     />
   );
 }

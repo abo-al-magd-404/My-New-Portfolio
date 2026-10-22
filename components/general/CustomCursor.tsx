@@ -6,7 +6,6 @@ export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const isVisibleRef = useRef(false);
   const clickAudioRef = useRef<HTMLAudioElement | null>(null);
-  const touchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const audio = new Audio("/sounds/click.mp3");
@@ -14,6 +13,8 @@ export default function CustomCursor() {
     clickAudioRef.current = audio;
 
     const moveCursor = (x: number, y: number) => {
+      if (window.matchMedia("(pointer: coarse)").matches) return;
+
       const cursor = cursorRef.current;
       if (!cursor) return;
 
@@ -31,25 +32,6 @@ export default function CustomCursor() {
 
     const handleMouseMove = (event: MouseEvent) => {
       moveCursor(event.clientX, event.clientY);
-    };
-
-    const handleTouchStartOrMove = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (!touch) return;
-
-      moveCursor(touch.clientX, touch.clientY);
-      if (touchTimeoutRef.current) {
-        clearTimeout(touchTimeoutRef.current);
-      }
-    };
-
-    const handleTouchEnd = () => {
-      if (touchTimeoutRef.current) {
-        clearTimeout(touchTimeoutRef.current);
-      }
-      touchTimeoutRef.current = setTimeout(() => {
-        hideCursor();
-      }, 500);
     };
 
     const handleMouseEnter = (event: MouseEvent) => {
@@ -82,11 +64,6 @@ export default function CustomCursor() {
     document.addEventListener("mouseleave", hideCursor);
     document.addEventListener("mouseenter", handleMouseEnter);
 
-    window.addEventListener("touchstart", handleTouchStartOrMove);
-    window.addEventListener("touchmove", handleTouchStartOrMove);
-    window.addEventListener("touchend", handleTouchEnd);
-    window.addEventListener("touchcancel", handleTouchEnd);
-
     window.addEventListener("click", handleGlobalClick);
     window.addEventListener("keydown", handleGlobalKeyDown);
 
@@ -95,17 +72,8 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", hideCursor);
       document.removeEventListener("mouseenter", handleMouseEnter);
 
-      window.removeEventListener("touchstart", handleTouchStartOrMove);
-      window.removeEventListener("touchmove", handleTouchStartOrMove);
-      window.removeEventListener("touchend", handleTouchEnd);
-      window.removeEventListener("touchcancel", handleTouchEnd);
-
       window.removeEventListener("click", handleGlobalClick);
       window.removeEventListener("keydown", handleGlobalKeyDown);
-
-      if (touchTimeoutRef.current) {
-        clearTimeout(touchTimeoutRef.current);
-      }
     };
   }, []);
 

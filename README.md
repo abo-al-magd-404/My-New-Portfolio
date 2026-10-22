@@ -2014,7 +2014,27 @@ Before implementing a major subsystem, define:
 - Its error-handling behavior.
 - Its interaction with other subsystems.
 
-The detailed component hierarchy and folder structure will be established during architecture design.
+The current project structure separates localized routes, shared components, motion utilities, translations, and static assets:
+
+```text
+app/
+  [locale]/
+    about/
+    contact/
+    education/
+    experience/
+    projects/
+components/
+  general/
+  providers/
+  ui/
+i18n/
+lib/
+  motion/
+public/
+  pictures/
+  sounds/
+```
 
 ---
 

@@ -1,7 +1,8 @@
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Audiowide, Tajawal, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "../components/general/CustomCursor";
+import ServiceWorkerRegistration from "../components/general/ServiceWorkerRegistration";
 import ThemeProvider from "../components/providers/ThemeProvider";
 import Background from "../components/general/Background";
 
@@ -35,6 +36,10 @@ export const viewport: Viewport = {
   ],
 };
 
+export const metadata: Metadata = {
+  manifest: "/manifest.webmanifest",
+};
+
 const localeBootScript = `(function(){try{var l=location.pathname.split("/")[1];if(l==="ar"||l==="en"){var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";}}catch(e){}})();`;
 
 export default function RootLayout({
@@ -44,6 +49,7 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={[
         "min-h-full",
@@ -57,6 +63,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: localeBootScript }} />
       </head>
       <body className="flex flex-col min-h-screen">
+        <ServiceWorkerRegistration />
         <CustomCursor />
         <ThemeProvider>
           <Background />

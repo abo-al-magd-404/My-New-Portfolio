@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <title>Offline | Mohamed Mahmoud Abo al magd</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #f5f5f5;
+      }
+      * { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: radial-gradient(ellipse at top, #15102b, #000 65%);
+      }
+      main {
+        width: min(100%, 540px);
+        padding: 40px 28px;
+        border: 1px solid #ffffff24;
+        border-radius: 24px;
+        background: #ffffff0a;
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(24px, 5vw, 32px);
+      }
+      p { color: #a3a3a3; line-height: 1.7; }
+      button {
+        margin-top: 16px;
+        padding: 12px 20px;
+        border: 0;
+        border-radius: 12px;
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(120deg, #2563eb, #7c3aed);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>You're offline</h1>
+      <p>This page isn't available offline yet. Reconnect and try again.</p>
+      <button onclick="location.reload()">Try again</button>
+    </main>
+    <script>
+      if (location.pathname.startsWith("/ar")) {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+        document.querySelector("h1").textContent = "أنت غير متصل بالإنترنت";
+        document.querySelector("p").textContent =
+          "هذه الصفحة غير متاحة دون اتصال بعد. اتصل بالإنترنت وحاول مرة أخرى.";
+        document.querySelector("button").textContent = "حاول مرة أخرى";
+        document.title = "غير متصل | محمد محمود أبو المجد";
+      }
+    </script>
+  </body>
+</html>

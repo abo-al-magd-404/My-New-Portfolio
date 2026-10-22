@@ -1,0 +1,5 @@
+# What I've done
+1. UI/UX design
+2. Project documentation
+3. Main folder structure
+4. Complete global styling

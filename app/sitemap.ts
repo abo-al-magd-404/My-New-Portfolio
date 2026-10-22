@@ -9,11 +9,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = [
     "",
-    "/About",
-    "/Education",
-    "/Projects",
-    "/Experience",
-    "/Contact",
+    "/about",
+    "/education",
+    "/projects",
+    "/experience",
+    "/contact",
   ];
 
   return routes.flatMap((route) =>

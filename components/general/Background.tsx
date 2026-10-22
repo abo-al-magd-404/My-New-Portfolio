@@ -701,12 +701,10 @@ export default function Background() {
 
       lastScrollY = y;
 
-      // On touch devices, use the viewport center as the ambient-light position.
       if (coarsePointer) {
         mx = W / 2;
         my = H / 2;
 
-        // Avoid animating the light from its initial off-screen position.
         if (hover < 0.02) {
           sx = mx;
           sy = my;
@@ -714,7 +712,6 @@ export default function Background() {
 
         hoverTarget = 1;
 
-        // Hide the light gradually after scrolling stops.
         if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
         scrollIdleTimer = setTimeout(() => {
           hoverTarget = 0;

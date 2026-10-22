@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect } from "react";
-import { Locale } from "../../i18n/config";
+import type { Locale } from "../../i18n/config";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;

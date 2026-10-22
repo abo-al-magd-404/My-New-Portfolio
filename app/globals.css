@@ -2,9 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* =========================================================
-  1. Theme Configuration
-========================================================= */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -69,16 +66,13 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* =========================================================
-  2. Design Tokens — Light Mode
-========================================================= */
 
 :root {
   color-scheme: light;
 
   --font-family: var(--font-audiowide);
 
-  --background: #f7f5ef;
+  --background: #f1eae4;
   --foreground: #171717;
 
   --card: #fdfcf8;
@@ -148,9 +142,6 @@
   --glow-violet: rgb(124 58 237 / 15%);
 }
 
-/* =========================================================
-  3. Design Tokens — Dark Mode
-========================================================= */
 
 .dark {
   color-scheme: dark;
@@ -211,9 +202,6 @@
   --glow-violet: rgb(139 92 246 / 22%);
 }
 
-/* =========================================================
-  4. Language & Typography
-========================================================= */
 
 html[lang="ar"] {
   --font-family: var(--font-tajawal);
@@ -223,9 +211,6 @@ html[lang="en"] {
   --font-family: var(--font-audiowide);
 }
 
-/* =========================================================
-  5. Base Styles
-========================================================= */
 
 @layer base {
   *,
@@ -387,9 +372,6 @@ html[lang="en"] {
   }
 }
 
-/* =========================================================
-  6. Layout Utilities
-========================================================= */
 
 @layer utilities {
   .container-main {
@@ -589,9 +571,6 @@ html[lang="en"] {
   }
 }
 
-/* =========================================================
-  7. Reduced Motion
-========================================================= */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -607,9 +586,6 @@ html[lang="en"] {
   }
 }
 
-/* ========================================
-  8. Custom Gradient Scrollbar
-======================================== */
 @supports (animation-timeline: scroll()) {
   html {
     scrollbar-width: none;

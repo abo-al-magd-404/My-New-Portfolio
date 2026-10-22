@@ -3,6 +3,7 @@ import { Audiowide, Geist_Mono, Zain } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "../components/general/CustomCursor";
 import ServiceWorkerRegistration from "../components/general/ServiceWorkerRegistration";
+import PageLoadDelay from "../components/general/PageLoadDelay";
 import ThemeProvider from "../components/providers/ThemeProvider";
 import Background from "../components/general/Background";
 
@@ -69,6 +70,7 @@ export default function RootLayout({
           <Background />
           {children}
         </ThemeProvider>
+        <PageLoadDelay />
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Audiowide, Tajawal, Geist_Mono } from "next/font/google";
+import { Audiowide, Geist_Mono, Zain } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "../components/general/CustomCursor";
 import ServiceWorkerRegistration from "../components/general/ServiceWorkerRegistration";
@@ -13,10 +13,10 @@ const audiowide = Audiowide({
   display: "swap",
 });
 
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
+const zain = Zain({
+  variable: "--font-zain",
   subsets: ["arabic", "latin"],
-  weight: ["400", "500", "700", "800"],
+  weight: ["400", "700", "800"],
   display: "swap",
 });
 
@@ -55,7 +55,7 @@ export default function RootLayout({
         "min-h-full",
         "antialiased",
         audiowide.variable,
-        tajawal.variable,
+        zain.variable,
         geistMono.variable,
       ].join(" ")}
     >

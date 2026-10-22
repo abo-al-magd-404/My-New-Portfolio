@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -65,7 +64,6 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
-
 
 :root {
   color-scheme: light;
@@ -142,7 +140,6 @@
   --glow-violet: rgb(124 58 237 / 15%);
 }
 
-
 .dark {
   color-scheme: dark;
 
@@ -202,15 +199,13 @@
   --glow-violet: rgb(139 92 246 / 22%);
 }
 
-
 html[lang="ar"] {
-  --font-family: var(--font-tajawal);
+  --font-family: var(--font-zain);
 }
 
 html[lang="en"] {
   --font-family: var(--font-audiowide);
 }
-
 
 @layer base {
   *,
@@ -371,7 +366,6 @@ html[lang="en"] {
     background: var(--brand-blue);
   }
 }
-
 
 @layer utilities {
   .container-main {

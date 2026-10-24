@@ -10,7 +10,6 @@ const PRECACHE_URLS = [
   "/ar",
   "/pictures/favicon.ico",
   "/pictures/apple-touch-icon.png",
-  "/pictures/pwa-icon.svg",
 ];
 
 self.addEventListener("install", (event) => {

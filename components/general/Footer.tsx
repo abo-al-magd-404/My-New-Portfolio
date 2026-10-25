@@ -158,11 +158,14 @@ export default function Footer({ locale }: FooterProps) {
             />
             <p className="italic">
               {isArabic
-                ? "«نطلب الحق ونبذل في إدراكه غاية الجهد.»"
-                : "“The important thing is not to stop questioning. Curiosity has its own reason for existing.”"}
+                ? "«لو أنكم تتوكلون على الله حقَّ توكُّله ؛ لرزقكم كما يرزق الطيرَ : تغدوا خماصًا وتروح بطانًا»"
+                : "“If you all depend on Allah with due reliance, He would certainly give you provision as He gives it to birds who go forth hungry in the morning and return with full belly at dusk”"}
             </p>
             <cite className="mt-2 block text-[11px] not-italic text-foreground/70">
-              — {isArabic ? "ابن الهيثم" : "Albert Einstein"}
+              —{" "}
+              {isArabic
+                ? "عمر بن الخطاب رضي الله عنه عن النبي صلى الله عليه وسلم"
+                : "From Umar ibn al-Khattab, from the Prophet Muhammad"}
             </cite>
           </blockquote>
         </div>
